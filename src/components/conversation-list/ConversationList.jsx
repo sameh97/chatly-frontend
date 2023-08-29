@@ -27,7 +27,6 @@ const ConversationList = ({ conversations }) => {
           ))}
         </div>
       </div>
-
     </div>
   );
 };

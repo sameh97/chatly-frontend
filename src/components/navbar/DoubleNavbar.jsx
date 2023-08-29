@@ -7,6 +7,7 @@ import {
   createStyles,
   Stack,
   rem,
+  Switch,
 } from "@mantine/core";
 import {
   IconHome2,
@@ -19,6 +20,7 @@ import {
 } from "@tabler/icons-react";
 import { MantineLogo } from "@mantine/ds";
 import "./DoubleNavbar.scss";
+import { Link, Route } from "react-router-dom";
 
 const useStyles = createStyles((theme) => ({
   link: {
@@ -68,27 +70,24 @@ function NavbarLink({ icon: Icon, label, active, onClick }) {
 }
 
 const mockdata = [
-  { icon: IconMessageCircle, label: "Messages" },
-  { icon: IconHome2, label: "Home" },
-  { icon: IconGauge, label: "Dashboard" },
-  { icon: IconUser, label: "Account" },
-  { icon: IconSettings, label: "Settings" },
+  { icon: IconMessageCircle, label: "Messages", to: "messages" },
+  { icon: IconHome2, label: "Home", to: "home" },
+  { icon: IconGauge, label: "Dashboard", to: "dashboard" },
+  // { icon: IconUser, label: "Account" },
+  // { icon: IconSettings, label: "Settings" },
 ];
 
-export function NavbarMinimal() {
+export function DoubleNavbar() {
   const [active, setActive] = useState(2);
 
   const links = mockdata.map((link, index) => (
-    <NavbarLink
-      {...link}
-      key={link.label}
-      active={index === active}
-      onClick={() => setActive(index)}
-    />
+    <Link to={link.to} key={link.label} onClick={() => setActive(index)}>
+      <NavbarLink {...link} active={index === active} />
+    </Link>
   ));
 
   return (
-    <Navbar height={750} width={{ base: 80 }} p="md">
+    <Navbar height="100%" width={{ base: 80 }} p="md">
       <Center>
         <MantineLogo type="mark" size={30} />
       </Center>

@@ -1,94 +1,30 @@
-import logo from "./logo.svg";
-import "./App.css";
-import { NavbarMinimal } from "./components/navbar/DoubleNavbar";
-import ConversationList from "./components/conversation-list/ConversationList";
+import { DoubleNavbar } from "./components/navbar/DoubleNavbar";
+import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
+import Messages from "./components/messages-component/Messages";
 
+function Home() {
+  return <div>Home component content</div>;
+}
+
+function Dashboard() {
+  return <div>Dashboard component content</div>;
+}
 function App() {
   return (
-    <>
+    <Router>
       <div className="app-container">
         <div>
-          <NavbarMinimal></NavbarMinimal>
+          <DoubleNavbar />
         </div>
         <div>
-          <ConversationList
-            conversations={[
-              {
-                id: 1,
-                name: "John Doe",
-                unreadCount: 2,
-                messages: [
-                  { id: 1, text: "Hello John!", timestamp: new Date() },
-                  { id: 2, text: "Hey there!", timestamp: new Date() },
-                ],
-              },
-              {
-                id: 2,
-                name: "Jane Smith",
-                unreadCount: 0,
-                messages: [{ id: 1, text: "Hi Jane!", timestamp: new Date() }],
-              },
-              {
-                id: 1,
-                name: "John Doe",
-                unreadCount: 2,
-                messages: [
-                  { id: 1, text: "Hello John!", timestamp: new Date() },
-                  { id: 2, text: "Hey there!", timestamp: new Date() },
-                ],
-              },
-              {
-                id: 2,
-                name: "Jane Smith",
-                unreadCount: 0,
-                messages: [{ id: 1, text: "Hi Jane!", timestamp: new Date() }],
-              },
-              {
-                id: 1,
-                name: "John Doe",
-                unreadCount: 2,
-                messages: [
-                  { id: 1, text: "Hello John!", timestamp: new Date() },
-                  { id: 2, text: "Hey there!", timestamp: new Date() },
-                ],
-              },
-              {
-                id: 2,
-                name: "Jane Smith",
-                unreadCount: 0,
-                messages: [{ id: 1, text: "Hi Jane!", timestamp: new Date() }],
-              },
-              {
-                id: 1,
-                name: "John Doe",
-                unreadCount: 2,
-                messages: [
-                  { id: 1, text: "Hello John!", timestamp: new Date() },
-                  { id: 2, text: "Hey there!", timestamp: new Date() },
-                ],
-              },
-              {
-                id: 2,
-                name: "Jane Smith",
-                unreadCount: 0,
-                messages: [{ id: 1, text: "Hi Jane!", timestamp: new Date() }],
-              },
-              {
-                id: 1,
-                name: "John Doe",
-                unreadCount: 2,
-                messages: [
-                  { id: 1, text: "Hello John!", timestamp: new Date() },
-                  { id: 2, text: "Hey there!", timestamp: new Date() },
-                ],
-              },
-
-            
-            ]}
-          ></ConversationList>
+          <Routes>
+            <Route path="/messages" element={<Messages />} />
+            <Route path="/home" element={<Home />} />
+            <Route path="/dashboard" element={<Dashboard />} />
+          </Routes>
         </div>
       </div>
-    </>
+    </Router>
   );
 }
 
