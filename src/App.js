@@ -1,14 +1,9 @@
 import { DoubleNavbar } from "./components/navbar/DoubleNavbar";
 import { BrowserRouter as Router, Routes, Route } from "react-router-dom";
 import Messages from "./components/messages-component/Messages";
+import Profile from "./components/profile-component/Profile";
+import Home from "./components/home-component/Home";
 
-function Home() {
-  return <div>Home component content</div>;
-}
-
-function Dashboard() {
-  return <div>Dashboard component content</div>;
-}
 function App() {
   return (
     <Router>
@@ -20,7 +15,7 @@ function App() {
           <Routes>
             <Route path="/messages" element={<Messages />} />
             <Route path="/home" element={<Home />} />
-            <Route path="/dashboard" element={<Dashboard />} />
+            <Route path="/profile" element={<Profile />}></Route>
           </Routes>
         </div>
       </div>

@@ -1,9 +1,16 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { Paper, Text, Badge } from "@mantine/core";
 import "./ConversationList.scss";
 
-const ConversationList = ({ conversations }) => {
+const ConversationList = ({ conversations, onSelectConversation }) => {
   const [selectedConversation, setSelectedConversation] = useState(null);
+
+  useEffect(() => {
+    if (selectedConversation) {
+      onSelectConversation(selectedConversation);
+    }
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, [selectedConversation]);
 
   return (
     <div style={{ display: "flex", height: "100vh" }}>

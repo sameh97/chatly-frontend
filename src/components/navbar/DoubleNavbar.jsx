@@ -7,20 +7,18 @@ import {
   createStyles,
   Stack,
   rem,
-  Switch,
 } from "@mantine/core";
 import {
   IconHome2,
   IconGauge,
-  IconUser,
-  IconSettings,
   IconLogout,
   IconSwitchHorizontal,
   IconMessageCircle,
+  IconUser,
 } from "@tabler/icons-react";
 import { MantineLogo } from "@mantine/ds";
 import "./DoubleNavbar.scss";
-import { Link, Route } from "react-router-dom";
+import { Link } from "react-router-dom";
 
 const useStyles = createStyles((theme) => ({
   link: {
@@ -72,7 +70,7 @@ function NavbarLink({ icon: Icon, label, active, onClick }) {
 const mockdata = [
   { icon: IconMessageCircle, label: "Messages", to: "messages" },
   { icon: IconHome2, label: "Home", to: "home" },
-  { icon: IconGauge, label: "Dashboard", to: "dashboard" },
+  { icon: IconUser, label: "Profile", to: "profile" },
   // { icon: IconUser, label: "Account" },
   // { icon: IconSettings, label: "Settings" },
 ];
