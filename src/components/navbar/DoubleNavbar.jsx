@@ -19,6 +19,9 @@ import {
 import { MantineLogo } from "@mantine/ds";
 import "./DoubleNavbar.scss";
 import { Link } from "react-router-dom";
+import ConfirmationDialog from "../shared/confirmation-dialog/ConfirmationDialog";
+import { AppConsts } from "../../common/app-consts";
+import useAuthStore from "../../stores/authStore";
 
 const useStyles = createStyles((theme) => ({
   link: {
@@ -77,6 +80,18 @@ const mockdata = [
 
 export function DoubleNavbar() {
   const [active, setActive] = useState(2);
+  const [isLogoutModalOpen, setIsLogoutModalOpen] = useState(false);
+  const logoutAction = useAuthStore((state) => state.logout);
+
+  const handleLogout = () => {
+    setIsLogoutModalOpen(true);
+  };
+
+  const confirmLogout = () => {
+    localStorage.removeItem(AppConsts.KEY_USER_TOKEN);
+    logoutAction();
+    setIsLogoutModalOpen(false);
+  };
 
   const links = mockdata.map((link, index) => (
     <Link to={link.to} key={link.label} onClick={() => setActive(index)}>
@@ -97,7 +112,16 @@ export function DoubleNavbar() {
       <Navbar.Section>
         <Stack justify="center" spacing={0}>
           <NavbarLink icon={IconSwitchHorizontal} label="Change account" />
-          <NavbarLink icon={IconLogout} label="Logout" />
+          <NavbarLink
+            icon={IconLogout}
+            label="Logout"
+            onClick={() => handleLogout()}
+          />
+          <ConfirmationDialog
+            isOpen={isLogoutModalOpen}
+            onRequestClose={() => setIsLogoutModalOpen(false)}
+            onConfirm={confirmLogout}
+          />
         </Stack>
       </Navbar.Section>
     </Navbar>

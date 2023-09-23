@@ -5,7 +5,7 @@ body {
     sans-serif;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
-  overflow: hidden; 
+  overflow: hidden;
 }
 
 code {
@@ -16,4 +16,5 @@ code {
 .app-container {
   display: flex;
   flex-direction: row;
+  height: 100vh;
 }
