@@ -13,15 +13,20 @@ import {
 import axios from "axios";
 import { useState } from "react";
 import { hasValue } from "../../common/app-utils";
-import { persistTokenFromResponse } from "../../services/authentication-service";
+import {
+  persistTokenFromResponse,
+  persistUserFromToken,
+} from "../../services/authentication-service";
 import useAuthStore from "../../stores/authStore";
 import { toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
+import useUserStore from "../../stores/user-store";
 
 export function LoginComponent() {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const loginAction = useAuthStore((state) => state.login);
+  const setCurrentUserAction = useUserStore((state) => state.setCurrentUser);
 
   const handlePasswordChange = (e) => {
     setPassword(e.target.value);
@@ -50,6 +55,10 @@ export function LoginComponent() {
 
         if (hasValue(authorizationValue)) {
           loginAction();
+
+          const currentUser = persistUserFromToken();
+          setCurrentUserAction(currentUser);
+
           toast.success("Login successfull", {
             position: toast.POSITION.TOP_CENTER,
           });

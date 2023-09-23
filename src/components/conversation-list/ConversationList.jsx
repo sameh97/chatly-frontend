@@ -1,5 +1,6 @@
 import React, { useEffect, useState } from "react";
 import { Paper, Text, Badge } from "@mantine/core";
+import uniqid from "uniqid";
 import "./ConversationList.scss";
 
 const ConversationList = ({ conversations, onSelectConversation }) => {
@@ -18,7 +19,7 @@ const ConversationList = ({ conversations, onSelectConversation }) => {
         <div className="nav-container">
           {conversations.map((conversation) => (
             <Paper
-              key={conversation.id}
+              key={uniqid()}
               padding="md"
               style={{ cursor: "pointer", marginBottom: "1rem" }}
               onClick={() => setSelectedConversation(conversation)}
@@ -26,7 +27,7 @@ const ConversationList = ({ conversations, onSelectConversation }) => {
               radius="md"
               color={selectedConversation === conversation ? "teal" : "white"}
             >
-              <Text size="md">{conversation.name}</Text>
+              <Text size="md">{conversation.user1}</Text>
               <Badge color="gray" style={{ marginTop: "0.5rem" }}>
                 {conversation.unreadCount} unread
               </Badge>

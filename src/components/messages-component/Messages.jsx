@@ -1,8 +1,33 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import ConversationList from "../conversation-list/ConversationList";
+import { AppConsts } from "../../common/app-consts";
+import useUserStore from "../../stores/user-store";
+import axios from "axios";
 
 const Messages = () => {
   const [selectedConversation, setSelectedConversation] = useState(null);
+  const [conversations, setConversations] = useState([]);
+  const currentUser = useUserStore((state) => state.currentUser);
+
+  // Assuming you have currentUser and setConversations defined
+
+  useEffect(() => {
+    const fetchConversations = async () => {
+      try {
+        const url = `${AppConsts.BASE_URL}/getConversations?userId=${currentUser._id}`;
+        const response = await axios.get(url);
+
+        if (response.data) {
+          setConversations(response.data);
+        }
+      } catch (error) {
+        console.error("Error while fetching conversations, Error:", error);
+      }
+    };
+
+    // Call the async function
+    fetchConversations();
+  }, [currentUser]);
 
   const handleSelectConversation = (conversation) => {
     setSelectedConversation(conversation);
@@ -12,77 +37,7 @@ const Messages = () => {
     <div className="messages-page-container">
       <div>
         <ConversationList
-          conversations={[
-            {
-              id: 1,
-              name: "John Doe",
-              unreadCount: 2,
-              messages: [
-                { id: 1, text: "Hello John!", timestamp: new Date() },
-                { id: 2, text: "Hey there!", timestamp: new Date() },
-              ],
-            },
-            {
-              id: 2,
-              name: "Jane Smith",
-              unreadCount: 0,
-              messages: [{ id: 1, text: "Hi Jane!", timestamp: new Date() }],
-            },
-            {
-              id: 3,
-              name: "John Doe",
-              unreadCount: 2,
-              messages: [
-                { id: 1, text: "Hello John!", timestamp: new Date() },
-                { id: 2, text: "Hey there!", timestamp: new Date() },
-              ],
-            },
-            {
-              id: 4,
-              name: "Jane Smith",
-              unreadCount: 0,
-              messages: [{ id: 1, text: "Hi Jane!", timestamp: new Date() }],
-            },
-            {
-              id: 5,
-              name: "John Doe",
-              unreadCount: 2,
-              messages: [
-                { id: 1, text: "Hello John!", timestamp: new Date() },
-                { id: 2, text: "Hey there!", timestamp: new Date() },
-              ],
-            },
-            {
-              id: 6,
-              name: "Jane Smith",
-              unreadCount: 0,
-              messages: [{ id: 1, text: "Hi Jane!", timestamp: new Date() }],
-            },
-            {
-              id: 7,
-              name: "John Doe",
-              unreadCount: 2,
-              messages: [
-                { id: 1, text: "Hello John!", timestamp: new Date() },
-                { id: 2, text: "Hey there!", timestamp: new Date() },
-              ],
-            },
-            {
-              id: 8,
-              name: "Jane Smith",
-              unreadCount: 0,
-              messages: [{ id: 1, text: "Hi Jane!", timestamp: new Date() }],
-            },
-            {
-              id: 899,
-              name: "John Doe",
-              unreadCount: 2,
-              messages: [
-                { id: 1, text: "Hello John!", timestamp: new Date() },
-                { id: 2, text: "Hey there!", timestamp: new Date() },
-              ],
-            },
-          ]}
+          conversations={conversations}
           onSelectConversation={handleSelectConversation}
         ></ConversationList>
       </div>
