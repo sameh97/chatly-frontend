@@ -47,8 +47,8 @@ const ConversationDisplay = ({ conversation }) => {
                 style={{
                   background:
                     message.senderId === currentUser._id
-                      ? "blue" // Change this to the desired color
-                      : "lightgray", // Change this to the desired color
+                      ? "blue" 
+                      : "lightgray", 
                   padding: "10px",
                   borderRadius: "8px",
                   maxWidth: "70%",
