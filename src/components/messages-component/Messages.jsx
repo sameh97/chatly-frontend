@@ -1,14 +1,24 @@
 import { useEffect, useState } from "react";
-import ConversationList from "../conversation-list/ConversationList";
+
 import { AppConsts } from "../../common/app-consts";
 import useUserStore from "../../stores/user-store";
 import axios from "axios";
+import { Tabs, rem } from "@mantine/core";
+import {
+  IconPhoto,
+  IconMessageCircle,
+  IconSettings,
+} from "@tabler/icons-react";
+import { hasValue } from "../../common/app-utils";
+import Conversation from "../conversations-components/conversation-component/Conversation";
+import ConversationDisplay from "../conversations-components/conversation-display-component/ConversationDisplay";
 
 const Messages = () => {
   const [selectedConversation, setSelectedConversation] = useState(null);
   const [conversations, setConversations] = useState([]);
   const currentUser = useUserStore((state) => state.currentUser);
 
+  const iconStyle = { width: rem(12), height: rem(12) };
   // Assuming you have currentUser and setConversations defined
 
   useEffect(() => {
@@ -18,6 +28,7 @@ const Messages = () => {
         const response = await axios.get(url);
 
         if (response.data) {
+          console.log(response.data);
           setConversations(response.data);
         }
       } catch (error) {
@@ -34,28 +45,42 @@ const Messages = () => {
   };
 
   return (
-    <div className="messages-page-container">
-      <div>
-        <ConversationList
-          conversations={conversations}
-          onSelectConversation={handleSelectConversation}
-        ></ConversationList>
-      </div>
-      <div>
-        {selectedConversation && (
-          <div>
-            {/* Render the messages of the selected conversation */}
-            {selectedConversation.messages.map((message) => (
-              <div key={message.id}>
-                <p>{message.text}</p>
-              </div>
-            ))}
-
-            <h2>sasaca</h2>
-          </div>
+    <Tabs
+      orientation="vertical"
+      defaultValue="gallery"
+      style={{ width: "100vw", height: "100vh" }}
+    >
+      <Tabs.List style={{ width: "18%" }}>
+        {hasValue(conversations) ? (
+          conversations.map((conversation) => (
+            <Tabs.Tab key={conversation._id} value={conversation._id}>
+              {
+                <Conversation
+                  conversation={conversation}
+                  setSelectedConversation={handleSelectConversation}
+                  selectedConversation={selectedConversation}
+                />
+              }
+            </Tabs.Tab>
+          ))
+        ) : (
+          <p>No conversations found.</p>
         )}
-      </div>
-    </div>
+      </Tabs.List>
+
+      {conversations.map((conversation) => (
+        <Tabs.Panel key={conversation._id} value={conversation._id}>
+          {/* <Conversation
+            conversation={conversation}
+            setSelectedConversation={setSelectedConversation}
+            selectedConversation={selectedConversation}
+          /> */}
+          <ConversationDisplay
+            conversation={conversation}
+          ></ConversationDisplay>
+        </Tabs.Panel>
+      ))}
+    </Tabs>
   );
 };
 
