@@ -21,6 +21,8 @@ import useAuthStore from "../../stores/authStore";
 import { toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import useUserStore from "../../stores/user-store";
+import { io } from 'socket.io-client';
+
 
 export function LoginComponent() {
   const [email, setEmail] = useState("");
@@ -58,6 +60,7 @@ export function LoginComponent() {
 
           const currentUser = persistUserFromToken();
           setCurrentUserAction(currentUser);
+
 
           toast.success("Login successfull", {
             position: toast.POSITION.TOP_CENTER,
