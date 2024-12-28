@@ -95,8 +95,7 @@ const ConversationDisplay = ({ conversation }) => {
         shadow="xs"
         style={{
           height: "100vh",
-          backgroundImage:
-            'url("https://i.pinimg.com/564x/8c/98/99/8c98994518b575bfd8c949e91d20548b.jpg")',
+          backgroundColor: "#ebeced",
           backgroundSize: "cover",
         }}
       >
