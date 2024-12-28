@@ -11,9 +11,22 @@ import Home from "./components/home-component/Home";
 import { LoginComponent } from "./components/login/LoginComponent";
 import useAuthStore from "./stores/authStore.js";
 import { ToastContainer } from "react-toastify";
-
+import { useEffect } from "react";
+import useSocketStore from "./stores/socket-store.js";
+import useUserStore from "./stores/user-store.js"
 function App() {
   const isAuthenticated = useAuthStore((state) => state.isAuthenticated);
+  const currentUser = useUserStore(state => state.currentUser);
+
+  const { connect, disconnect} = useSocketStore()
+
+  useEffect(() => {
+    connect(currentUser)
+
+       return () => {
+        disconnect();
+      };
+    }, [connect, disconnect]);
 
   return (
     <Router>

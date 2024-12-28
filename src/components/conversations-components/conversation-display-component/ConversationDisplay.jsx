@@ -5,13 +5,37 @@ import { AppConsts } from "../../../common/app-consts";
 import axios from "axios";
 import "./ConversationDisplay.scss";
 import { hasValue } from "../../../common/app-utils";
+import useSocketStore  from "./../../../stores/socket-store.js"
 
 const ConversationDisplay = ({ conversation }) => {
   const [allConversationMessages, setAllConversationMessages] = useState([]);
   const [messageToSend, setMessageToSend] = useState("");
   const messageListRef = useRef(null);
-
+  const { socket } = useSocketStore();
   const currentUser = useUserStore((state) => state.currentUser);
+
+  // Listen for new messages emitted by the server through socket
+  useEffect(() => {
+  
+    if (socket) {
+      socket.on("newMessage", (newMessage) => {
+        console.log("neweewew:", newMessage);
+        
+        // Check if the new message belongs to the current conversation
+        if (newMessage.conversationId === conversation._id && 
+          newMessage.receiverId === currentUser._id
+        ) {
+          setAllConversationMessages((prev) => [...prev, newMessage]);
+        }
+      });
+    }
+
+    return () => {
+      if (socket) {
+        socket.off("new-message");
+      }
+    };
+  }, [socket, conversation._id]);
 
   useEffect(() => {
     const url = `${AppConsts.BASE_URL}/messages?conversationId=${conversation._id}`;
@@ -126,7 +150,7 @@ const ConversationDisplay = ({ conversation }) => {
                   style={{
                     background:
                       message.senderId === currentUser._id
-                        ? "blue"
+                        ? "#6fa5e3"
                         : "lightgray",
                     padding: "10px",
                     borderRadius: "8px",

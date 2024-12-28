@@ -1,29 +1,42 @@
 import create from 'zustand';
 import io from 'socket.io-client';
 
-const useSocketStore = create((set) => ({
+const useSocketStore = create((set, get) => ({
   socket: null,
-  connect: () => {
+  connect: (currentUser) => {
+    // Check if already connected
+    if (get().socket) {
+      console.log('Already connected');
+      return;
+    }
+
     const socket = io('http://localhost:5000');
 
     socket.on('connect', () => {
       console.log('Connected to WebSocket server');
-      // Optionally, you can send user ID or other data after connecting
-      // socket.emit('send-client-data', { userId: /* your user ID */ });
-      set((state) => ({ ...state, socket }));
+      // Emit user data when the socket is connected
+      socket.emit("send-client-data", currentUser);
+      set({ socket });
     });
 
     socket.on('disconnect', () => {
       console.log('Disconnected from WebSocket server');
-      set((state) => ({ ...state, socket: null }));
+      set({ socket: null });
     });
 
-    // Additional event listeners as needed
-
-    // Clean up the socket connection when the store unmounts
+    // Clean up socket connection on store unmount
     return () => {
       socket.disconnect();
+      set({ socket: null });
     };
+  },
+  disconnect: () => {
+    const socket = get().socket;
+    if (socket) {
+      socket.disconnect();
+      set({ socket: null });
+      console.log('Socket manually disconnected');
+    }
   },
 }));
 

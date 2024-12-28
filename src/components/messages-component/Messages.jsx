@@ -48,7 +48,7 @@ const Messages = () => {
     <Tabs
       orientation="vertical"
       defaultValue="gallery"
-      style={{ width: "100vw", height: "100vh" }}
+      style={{ width: "100vw", height: "100vh"  }}
     >
       <Tabs.List style={{ width: "18%" }}>
         {hasValue(conversations) ? (
@@ -61,7 +61,9 @@ const Messages = () => {
                   selectedConversation={selectedConversation}
                 />
               }
+              
             </Tabs.Tab>
+            
           ))
         ) : (
           <p>No conversations found.</p>
@@ -78,6 +80,7 @@ const Messages = () => {
           <ConversationDisplay
             conversation={conversation}
           ></ConversationDisplay>
+          
         </Tabs.Panel>
       ))}
     </Tabs>
