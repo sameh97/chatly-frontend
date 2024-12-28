@@ -84,7 +84,11 @@ const ConversationDisplay = ({ conversation }) => {
       // TOOD: send message
       // You can send the message here and update the message list
       // Example: add the new message to allConversationMessages
+      const newMessage = response.data;
+      setAllConversationMessages((prev) => [...prev, newMessage]);
+
       // Then, clear the input field: setMessageToSend("");
+      setMessageToSend("")
     }
   };
 
