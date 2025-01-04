@@ -41,7 +41,7 @@ function App() {
               <Routes>
                 <Route path="/" element={<Home />} />
                 <Route path="/messages" element={<Messages />} />
-                <Route path="/profile" element={<Profile />} />
+                <Route path="/profile" element={<Profile user={currentUser} />} />
                 <Route path="/home" element={<Home />} />
                 <Route path="*" element={<Navigate to="/home" />} />
               </Routes>

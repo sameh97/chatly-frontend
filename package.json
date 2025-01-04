@@ -5,6 +5,7 @@
   "dependencies": {
     "@mantine/core": "^6.0.19",
     "@mantine/ds": "^6.0.19",
+    "@mantine/form": "^7.15.2",
     "@tabler/icons-react": "^2.32.0",
     "@testing-library/jest-dom": "^5.17.0",
     "@testing-library/react": "^13.4.0",

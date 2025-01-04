@@ -16,26 +16,29 @@ const ConversationDisplay = ({ conversation }) => {
 
   // Listen for new messages emitted by the server through socket
   useEffect(() => {
-  
     if (socket) {
-      socket.on("newMessage", (newMessage) => {
+      const handleNewMessage = (newMessage) => {
         console.log("neweewew:", newMessage);
-        
+  
         // Check if the new message belongs to the current conversation
-        if (newMessage.conversationId === conversation._id && 
+        if (
+          newMessage.conversationId === conversation._id &&
           newMessage.receiverId === currentUser._id
         ) {
           setAllConversationMessages((prev) => [...prev, newMessage]);
         }
-      });
+      };
+  
+      // Attach the event listener
+      socket.on("newMessage", handleNewMessage);
+  
+      // Cleanup function to remove the listener
+      return () => {
+        socket.off("newMessage", handleNewMessage);
+      };
     }
-
-    return () => {
-      if (socket) {
-        socket.off("new-message");
-      }
-    };
-  }, [socket, conversation._id]);
+  }, [socket, conversation._id, currentUser._id]);
+  
 
   useEffect(() => {
     const url = `${AppConsts.BASE_URL}/messages?conversationId=${conversation._id}`;
