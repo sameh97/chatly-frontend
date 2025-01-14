@@ -30,7 +30,7 @@ const Profile = ({ user }) => {
       </div>
     </div>
     <div className="edit-container">
-        <h1>Edit Profile</h1>
+        <h1>Profile details</h1>
         <EditProfileForm user={user} onSubmit={handleFormSubmit} />
       </div>
 </div>
