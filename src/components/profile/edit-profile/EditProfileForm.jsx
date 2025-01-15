@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import { Button, Group, TextInput, Card, Title, ActionIcon, Divider } from "@mantine/core";
+import { Button, Group, TextInput, Card, Title, ActionIcon } from "@mantine/core";
 import { IconPencil, IconCheck, IconX } from "@tabler/icons-react";
 import { useForm } from "@mantine/form";
 
@@ -7,23 +7,43 @@ const EditProfileForm = ({ user, onSubmit }) => {
   const [editingFields, setEditingFields] = useState({ username: false, email: false });
 
   const form = useForm({
+    mode: 'uncontrolled',
+    validateInputOnChange: true,
     initialValues: {
       username: user.username || "",
       email: user.email || "",
     },
     validate: {
-      email: (value) => (/^\S+@\S+$/.test(value) ? null : "Invalid email"),
-      username: (value) => (value.trim().length > 0 ? null : "Username is required"),
+      email: (value) => (/^\S+@\S+\.\S+$/.test(value) ? null : "Invalid email"),
+      username: (value) =>
+        value.trim().length > 3 ? null : "Username must be at least 4 characters long",
     },
   });
 
   const handleSaveField = (field) => {
+    // Validate the specific field before saving
+    const validationResult = form.validateField(field);
+    if (validationResult[field]) {
+      console.error(`Validation error on ${field}:`, validationResult[field]);
+      return;
+    }
+
     setEditingFields((prev) => ({ ...prev, [field]: false }));
     onSubmit({ [field]: form.values[field] });
   };
 
   const handleEditField = (field) => {
     setEditingFields((prev) => ({ ...prev, [field]: true }));
+  };
+
+
+  const handleCancelEditField = (field) => {
+    // Reset field value to its initial value
+    form.setValues({
+      ...form.values,
+      [field]: user[field], // Reset to the original user value
+    });
+    setEditingFields((prev) => ({ ...prev, [field]: false }));
   };
 
   const renderField = (label, field) => (
@@ -43,7 +63,9 @@ const EditProfileForm = ({ user, onSubmit }) => {
           <TextInput
             withAsterisk
             placeholder={`Enter ${label.toLowerCase()}`}
+            key={form.key(field)}
             {...form.getInputProps(field)}
+            error={form.errors[field]} // Display validation error dynamically
           />
           <Group mt="xs" spacing="xs">
             <Button
@@ -51,6 +73,7 @@ const EditProfileForm = ({ user, onSubmit }) => {
               color="green"
               leftIcon={<IconCheck size={14} />}
               onClick={() => handleSaveField(field)}
+              disabled={!!form.errors[field]} // Disable Save if the field is invalid
             >
               Save
             </Button>
@@ -58,7 +81,7 @@ const EditProfileForm = ({ user, onSubmit }) => {
               size="xs"
               color="gray"
               leftIcon={<IconX size={14} />}
-              onClick={() => setEditingFields((prev) => ({ ...prev, [field]: false }))}
+              onClick={() => handleCancelEditField(field)} // Use the cancel handler
             >
               Cancel
             </Button>
@@ -79,10 +102,6 @@ const EditProfileForm = ({ user, onSubmit }) => {
 
   return (
     <Card shadow="sm" padding="lg" radius="md" withBorder>
-      {/* <Title order={4} mb="md">
-        Edit Profile
-      </Title> */}
-      <Divider mb="lg" />
       {renderField("Username", "username")}
       {renderField("Email", "email")}
     </Card>

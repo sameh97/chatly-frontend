@@ -1,4 +1,4 @@
-import React, { useEffect } from "react";
+import React from "react";
 import "./Profile.scss";
 import EditProfileForm from "./../profile/edit-profile/EditProfileForm"
 const Profile = ({ user }) => {
@@ -9,6 +9,8 @@ const Profile = ({ user }) => {
   : "Invalid Date";
 
   const handleFormSubmit = (values) => {
+    console.log(user);
+    
     console.log("Updated user data:", values);
     // Call your API to update user data here
   };
