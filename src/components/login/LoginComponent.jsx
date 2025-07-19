@@ -42,8 +42,10 @@ export function LoginComponent() {
     // TODO: make validation
 
     const credentials = { email: email, password: password };
+    const REACT_APP_API_BASE_URL = "http://ec2-44-198-165-219.compute-1.amazonaws.com:5000";
 
-    const url = `http://localhost:5000/api/login`;
+
+    const url = `${REACT_APP_API_BASE_URL}/api/login`;
 
     try {
       const response = await axios.post(url, credentials);

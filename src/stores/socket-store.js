@@ -9,8 +9,9 @@ const useSocketStore = create((set, get) => ({
       console.log('Already connected');
       return;
     }
-
-    const socket = io('http://localhost:5000');
+    const REACT_APP_API_BASE_URL = "http://ec2-44-198-165-219.compute-1.amazonaws.com:5000";
+    
+    const socket = io(REACT_APP_API_BASE_URL);
 
     socket.on('connect', () => {
       console.log('Connected to WebSocket server');
