@@ -24,7 +24,9 @@ const Messages = () => {
   useEffect(() => {
     const fetchConversations = async () => {
       try {
-        const url = `${AppConsts.BASE_URL}/getConversations?userId=${currentUser._id}`;
+        const REACT_APP_API_BASE_URL = "http://ec2-44-198-165-219.compute-1.amazonaws.com:5000";
+        
+        const url = `${REACT_APP_API_BASE_URL}/api/getConversations?userId=${currentUser._id}`;
         const response = await axios.get(url);
 
         if (response.data) {
